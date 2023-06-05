@@ -4,6 +4,7 @@ import 'package:application/registration/authentication/auth_cubit.dart';
 import 'package:application/registration/authentication/auth_repository.dart';
 import 'package:application/registration/authentication/auth_state.dart';
 import 'package:application/registration/authentication/authenticating_screen.dart';
+import 'package:application/registration/sign_up/signup_cubit.dart';
 import 'package:application/registration/sign_up/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
               // tested with just a hot reload.
               primarySwatch: PRIMARY_SWATCH,
             ),
-            home: state is Authenticated ? HomeScreen():state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen():SignUpScreen(),
+            home: state is Authenticated ? HomeScreen():state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen(): BlocProvider<SignUpCubit>(create:(_)=>SignUpCubit(),child: SignUpScreen()),
           );
         },
       ),
