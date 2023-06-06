@@ -1,6 +1,7 @@
 
 
 
+import 'package:application/models/user_model.dart';
 import 'package:application/registration/authentication/auth_repository.dart';
 import 'package:application/registration/authentication/auth_state.dart';
 import 'package:dio/dio.dart';
@@ -41,7 +42,7 @@ class AuthCubit extends Cubit<AuthState>{
     AuthState newState;
     try{
       var response = await authRepository.getUserData(token: token);
-      newState = Authenticated();
+      newState = Authenticated(UserModel.fromJson(response.data));
       emit(newState);
     }catch(value){
       DioError error = value as DioError;
