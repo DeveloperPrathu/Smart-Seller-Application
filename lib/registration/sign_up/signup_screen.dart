@@ -1,3 +1,4 @@
+import 'package:application/registration/otp/otp_cubit.dart';
 import 'package:application/registration/sign_up/signup_cubit.dart';
 import 'package:application/registration/sign_up/signup_state.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is SignUpSuccess) {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => OtpScreen()));
+                        MaterialPageRoute(builder: (context) => BlocProvider<OtpCubit>(create: (_)=>OtpCubit() ,child: OtpScreen(_email, _phone, _name, _password))));
                   }
                   if (state is SignUpFailed) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -46,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
                         height: 28,
                       ),
                       Image.asset(
-                        'assets/images/logo1.png',
+                        'assets/images/logo.png',
                         height: 100,
                       ),
                       SizedBox(
