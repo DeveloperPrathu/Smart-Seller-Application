@@ -1,3 +1,4 @@
+import 'package:application/registration/forgot_password/forgot_password_cubit.dart';
 import 'package:application/registration/forgot_password/forgot_password_screen.dart';
 import 'package:application/registration/login/login_cubit.dart';
 import 'package:application/registration/login/login_state.dart';
@@ -72,8 +73,12 @@ class LoginScreen extends StatelessWidget {
                                 : () {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (_) =>
-                                                ForgotPasswordScreen()));
+                                            builder: (_) => BlocProvider<
+                                                    ForgotPasswordCubit>(
+                                                create: (_) =>
+                                                    ForgotPasswordCubit(),
+                                                child:
+                                                    ForgotPasswordScreen())));
                                   },
                             child: Text("Forgot Password?"))),
                     SizedBox(
