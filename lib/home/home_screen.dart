@@ -3,6 +3,6 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('home_screen'),);
+    return Scaffold(body: Text('Home Screen'),);
   }
 }

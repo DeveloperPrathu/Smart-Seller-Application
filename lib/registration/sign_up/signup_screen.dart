@@ -1,3 +1,4 @@
+import 'package:application/registration/login/login_cubit.dart';
 import 'package:application/registration/otp/otp_cubit.dart';
 import 'package:application/registration/sign_up/signup_cubit.dart';
 import 'package:application/registration/sign_up/signup_state.dart';
@@ -10,7 +11,7 @@ import '../login/login_screen.dart';
 import '../otp/otp_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  final formkey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   late String _email;
   late String _phone;
@@ -26,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Form(
-              key: formkey,
+              key: formKey,
               child: BlocConsumer<SignUpCubit, SignUpState>(
                 listener: (context, state) {
                   if (state is SignUpSuccess) {
@@ -103,7 +104,7 @@ class SignUpScreen extends StatelessWidget {
                           onPressed: (state is SignUpSubmitting)
                               ? null
                               : () {
-                                  if (formkey.currentState!.validate()) {
+                                  if (formKey.currentState!.validate()) {
                                     BlocProvider.of<SignUpCubit>(context)
                                         .requestOtp(_email, _phone);
                                   }
@@ -115,7 +116,7 @@ class SignUpScreen extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => BlocProvider<LoginCubit>(create:(_)=>LoginCubit(),child: LoginScreen())));
                           },
                           child: Text('Already have an account? Login'))
                     ],
@@ -134,7 +135,7 @@ class SignUpScreen extends StatelessWidget {
       enabled: enableForm,
       validator: (value) {
         if (!RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                EMAIL_REGEX)
             .hasMatch(value!)) {
           return "Please Enter A Valid Email Address!";
         }

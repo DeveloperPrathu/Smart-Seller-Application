@@ -15,6 +15,8 @@ final storage = FlutterSecureStorage();
 final AuthCubit authCubit = AuthCubit(storage: storage, authRepository: authRepository);
 
 void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
   
   if (authCubit.state is AuthInitial){
     await authCubit.authenticate();

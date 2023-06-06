@@ -8,6 +8,8 @@ const HOST_URL = "http://192.168.29.121:8000";
 const BASE_URL = "$HOST_URL/api";
 const UNAUTHENTICATED_USER = 'unauthenticated_user';
 
+const EMAIL_REGEX = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+
 //THEME COLOR
 
 const Map<int, Color> color = {
