@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         actions: _selectedDrawerIndex == 0 ? [
           IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
           IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart))

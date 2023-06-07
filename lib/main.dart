@@ -1,4 +1,5 @@
 import 'package:application/constants.dart';
+import 'package:application/home/fragments/home_fragment/home_fragment_cubit.dart';
 import 'package:application/home/home_screen.dart';
 import 'package:application/registration/authentication/auth_cubit.dart';
 import 'package:application/registration/authentication/auth_repository.dart';
@@ -55,7 +56,13 @@ class MyApp extends StatelessWidget {
               // tested with just a hot reload.
               primarySwatch: PRIMARY_SWATCH,
             ),
-            home: state is Authenticated ? HomeScreen():state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen(): BlocProvider<SignUpCubit>(create:(_)=>SignUpCubit(),child: SignUpScreen()),
+            home: state is Authenticated ? MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_)=>HomeFragmentCubit())
+
+              ],
+              child: HomeScreen()
+            ):state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen(): BlocProvider<SignUpCubit>(create:(_)=>SignUpCubit(),child: SignUpScreen()),
           );
         },
       ),
