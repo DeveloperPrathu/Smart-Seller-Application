@@ -1,15 +1,17 @@
 import '../../../models/category_model.dart';
+import '../../../models/slide_model.dart';
 
 abstract class HomeFragmentState {}
 
 class HomeFragmentInitial extends HomeFragmentState {}
 
-class CategoriesLoading extends HomeFragmentState {}
+class HomeFragmentLoading extends HomeFragmentState {}
 
-class CategoriesLoaded extends HomeFragmentState {
+class HomeFragmentLoaded extends HomeFragmentState {
   List<CategoryModel> categories;
+  List<SlideModel> slides;
 
-  CategoriesLoaded(this.categories);
+  HomeFragmentLoaded(this.categories, this.slides);
 }
 
 class HomeFragmentFailed extends HomeFragmentState {

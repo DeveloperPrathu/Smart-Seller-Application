@@ -1,7 +1,9 @@
 import 'package:application/MyWidgets/category_item.dart';
+import 'package:application/MyWidgets/slider_carousel.dart';
 import 'package:application/constants.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_cubit.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_state.dart';
+import 'package:application/models/slide_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +22,7 @@ class _HomeFragmentState extends State<HomeFragment> {
           if (state is HomeFragmentInitial) {
             BlocProvider.of<HomeFragmentCubit>(context).loadCategories();
           }
-          if (state is CategoriesLoaded) {
+          if (state is HomeFragmentLoaded) {
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -50,6 +52,10 @@ class _HomeFragmentState extends State<HomeFragment> {
                       SizedBox(height: 80, child: _categories(state),)
                     ],
                   ),
+                ),
+                SliverList(delegate: SliverChildBuilderDelegate((context, index){
+                  return listItem(state, 0);
+                }, childCount: 1),
                 )
               ],
             );
@@ -67,5 +73,14 @@ class _HomeFragmentState extends State<HomeFragment> {
         itemBuilder: (_, index) {
           return CategoryItem(state.categories[index]);
         });
+  }
+
+  listItem(state, viewtype){
+    switch(viewtype){
+      case 0:
+        return SliderCarousel(List.from(state.slides.map((SlideModel slide)=>slide.image.toString())));
+      default:
+        return Text('error');
+    }
   }
 }
