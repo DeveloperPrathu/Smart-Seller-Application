@@ -1,6 +1,7 @@
 import 'package:application/constants.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_cubit.dart';
 import 'package:application/home/home_screen.dart';
+import 'package:application/page_items/page_items_cubit.dart';
 import 'package:application/registration/authentication/auth_cubit.dart';
 import 'package:application/registration/authentication/auth_repository.dart';
 import 'package:application/registration/authentication/auth_state.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
             ),
             home: state is Authenticated ? MultiBlocProvider(
               providers: [
-                BlocProvider(create: (_)=>HomeFragmentCubit())
+                BlocProvider(create: (_)=>HomeFragmentCubit()),
+                BlocProvider(create: (_)=>PageItemsCubit()),
 
               ],
               child: HomeScreen()
