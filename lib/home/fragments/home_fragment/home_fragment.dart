@@ -1,5 +1,8 @@
 import 'package:application/MyWidgets/category_item.dart';
+import 'package:application/MyWidgets/image_banner.dart';
+import 'package:application/MyWidgets/product_grid.dart';
 import 'package:application/MyWidgets/slider_carousel.dart';
+import 'package:application/MyWidgets/swiper.dart';
 import 'package:application/constants.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_cubit.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_state.dart';
@@ -104,7 +107,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                     return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       if(index < widget.pgItems!.length){
-                        return listItem(widget.pgItems![index].viewtype);
+                        return listItem(widget.pgItems![index]);
                       }else{
                         if(pgstate is PageItemsLoaded && pgstate.pageItemModel.next != null){
                           BlocProvider.of<PageItemsCubit>(context).loadMoreItems();
@@ -134,17 +137,17 @@ class _HomeFragmentState extends State<HomeFragment> {
         });
   }
 
-  listItem(viewtype) {
-    switch (viewtype) {
+  listItem(Results result) {
+    switch (result.viewtype) {
       case 0:
         return SliderCarousel(List.from(
             widget.slides.map((SlideModel slide) => slide.image.toString())));
       case 1:
-        return Text('Banner');
+        return ImageBanner(DOMAIN_URL + result.image);
       case 2:
-        return Text('Swiper');
+        return Swiper(result);
       case 3:
-        return Text('Grid');
+        return ProductGrid(result);
       default:
         return Text('error');
     }
