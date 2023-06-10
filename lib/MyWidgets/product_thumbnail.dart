@@ -33,9 +33,9 @@ class ProductThumbnail extends StatelessWidget {
           ),
           Text(product.title!, style: TextStyle(fontSize: 14, height: 1.4),
           maxLines: 2, overflow: TextOverflow.ellipsis,),
-          Text(product.offerPrice!.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          Text("Rs. " + product.offerPrice!.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
           if(product.price != product.offerPrice)
-          Text(product.price!.toString(), style: TextStyle(fontSize: 12, decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold),),
+          Text("Rs. " + product.price!.toString(), style: TextStyle(fontSize: 12, decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold),),
         ],
       ),
     );

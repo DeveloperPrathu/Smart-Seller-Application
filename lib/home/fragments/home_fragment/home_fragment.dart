@@ -44,85 +44,90 @@ class _HomeFragmentState extends State<HomeFragment> {
           }
           if (state is HomeFragmentLoaded) {
             widget.slides = state.slides;
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  floating: true,
-                  toolbarHeight: 150,
-                  titleSpacing: 0,
-                  backgroundColor: Colors.white,
-                  title: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        color: PRIMARY_SWATCH,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                elevation: MaterialStateProperty.all(0)),
-                            onPressed: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                    color: Colors.grey,
-                                  ),
-                                  Text(
-                                    'Search',
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        height: 80,
-                        child: _categories(state),
-                      )
-                    ],
+            return RefreshIndicator(
+              onRefresh: () async {
+                BlocProvider.of<HomeFragmentCubit>(context).loadCategories();
+              },
+              child: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    floating: true,
+                    toolbarHeight: 150,
+                    titleSpacing: 0,
+                    backgroundColor: Colors.white,
+                    title: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          color: PRIMARY_SWATCH,
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  elevation: MaterialStateProperty.all(0)),
+                              onPressed: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      color: Colors.grey,
+                                    ),
+                                    Text(
+                                      'Search',
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        SizedBox(
+                          height: 80,
+                          child: _categories(state),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                BlocConsumer<PageItemsCubit, PageItemsState>(
-                  listener: (context, pgstate) {
-                    if (pgstate is PageItemsFailed) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(pgstate.message),
-                        backgroundColor: Colors.red,
-                      ));
-                    }
-                  },
-                  builder: (context, pgstate) {
-                    if(pgstate is PageItemsLoaded){
-                      widget.pgItems!.clear();
-                      widget.pgItems!.add(Results(viewtype: 0));
-                      widget.pgItems!.addAll(pgstate.pageItemModel.results!);
-                    }
-
-                    return SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      if(index < widget.pgItems!.length){
-                        return listItem(widget.pgItems![index]);
-                      }else{
-                        if(pgstate is PageItemsLoaded && pgstate.pageItemModel.next != null){
-                          BlocProvider.of<PageItemsCubit>(context).loadMoreItems();
-                        }
-                        return Center(child: CircularProgressIndicator());
+                  BlocConsumer<PageItemsCubit, PageItemsState>(
+                    listener: (context, pgstate) {
+                      if (pgstate is PageItemsFailed) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(pgstate.message),
+                          backgroundColor: Colors.red,
+                        ));
                       }
                     },
-                        childCount: pgstate is PageItemsLoading || (pgstate is PageItemsLoaded && pgstate.pageItemModel.next!=null)?widget.pgItems!.length+1:widget.pgItems!.length),
-                  );
-                  },
-                )
-              ],
+                    builder: (context, pgstate) {
+                      if(pgstate is PageItemsLoaded){
+                        widget.pgItems!.clear();
+                        widget.pgItems!.add(Results(viewtype: 0));
+                        widget.pgItems!.addAll(pgstate.pageItemModel.results!);
+                      }
+
+                      return SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        if(index < widget.pgItems!.length){
+                          return listItem(widget.pgItems![index]);
+                        }else{
+                          if(pgstate is PageItemsLoaded && pgstate.pageItemModel.next != null){
+                            BlocProvider.of<PageItemsCubit>(context).loadMoreItems();
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
+                          childCount: pgstate is PageItemsLoading || (pgstate is PageItemsLoaded && pgstate.pageItemModel.next!=null)?widget.pgItems!.length+1:widget.pgItems!.length),
+                    );
+                    },
+                  )
+                ],
+              ),
             );
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
