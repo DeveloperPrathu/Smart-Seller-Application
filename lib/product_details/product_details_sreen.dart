@@ -44,7 +44,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           elevation: 0,
                           actions: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (authState is Authenticated) {
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .updateWishlist(
+                                            selectedOption!.id!,
+                                            authState.userdata.wishlist!
+                                                    .contains(
+                                                        selectedOption!.id!)
+                                                ? REMOVE
+                                                : ADD)
+                                        .then((value) {
+                                      if (value == SUCCESS) {
+                                        setState(() {
+                                          //nothing
+                                        });
+                                      } else if (value == FAILED) {
+                                        Navigator.of(context)
+                                            .popUntil((route) => route.isFirst);
+                                      }
+                                    });
+                                  }
+                                },
                                 icon: Icon(authState is Authenticated
                                     ? authState.userdata.wishlist!
                                             .contains(selectedOption!.id!)
@@ -165,7 +186,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     : "Add to Cart",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                if (authState is Authenticated) {
+                                  BlocProvider.of<AuthCubit>(context)
+                                      .updateCart(
+                                          selectedOption!.id!,
+                                          authState.userdata.cart!
+                                                  .contains(selectedOption!.id!)
+                                              ? REMOVE
+                                              : ADD)
+                                      .then((value) {
+                                    if (value == SUCCESS) {
+                                      setState(() {
+                                        //nothing
+                                      });
+                                    } else if (value == FAILED) {
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    }
+                                  });
+                                }
+                              },
                             )),
                             Expanded(
                                 child: Container(

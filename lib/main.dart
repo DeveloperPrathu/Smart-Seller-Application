@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
 
               ],
               child: HomeScreen()
-            ):state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen(): BlocProvider<SignUpCubit>(create:(_)=>SignUpCubit(),child: SignUpScreen()),
+            ):state is AuthenticationFailed || state is Authenticating? AuthenticatingScreen(state is AuthenticationFailed?state.message:"Authenticating..."): BlocProvider<SignUpCubit>(create:(_)=>SignUpCubit(),child: SignUpScreen()),
           );
         },
       ),

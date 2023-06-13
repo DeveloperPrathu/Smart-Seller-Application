@@ -1,6 +1,4 @@
-
-
-
+import 'package:application/constants.dart';
 import 'package:application/models/user_model.dart';
 import 'package:application/registration/authentication/auth_repository.dart';
 import 'package:application/registration/authentication/auth_state.dart';
@@ -8,31 +6,31 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthCubit extends Cubit<AuthState>{
-
+class AuthCubit extends Cubit<AuthState> {
   static String token = '';
   AuthRepository authRepository;
   final FlutterSecureStorage storage;
 
-  AuthCubit({required this.storage, required this.authRepository}) : super(AuthInitial());
+  AuthCubit({required this.storage, required this.authRepository})
+      : super(AuthInitial());
 
   Future<AuthState> authenticate() async {
     AuthState newState;
-    if(token.isEmpty){
-      try{
+    if (token.isEmpty) {
+      try {
         var tokenValue = await _getToken();
-        if(tokenValue == null){
+        if (tokenValue == null) {
           newState = LoggedOut();
           emit(newState);
-        }else{
+        } else {
           token = tokenValue;
           newState = await _fetchUserData();
         }
-      }catch(e){
+      } catch (e) {
         newState = LoggedOut();
         emit(newState);
       }
-    }else {
+    } else {
       newState = await _fetchUserData();
     }
     return newState;
@@ -40,19 +38,20 @@ class AuthCubit extends Cubit<AuthState>{
 
   Future<AuthState> _fetchUserData() async {
     AuthState newState;
-    try{
+    try {
       var response = await authRepository.getUserData(token: token);
       newState = Authenticated(UserModel.fromJson(response.data));
       emit(newState);
-    }catch(value){
+    } catch (value) {
       DioError error = value as DioError;
-      if(error.response != null){
+      if (error.response != null) {
         newState = await removeToken();
-      }else{
-        if(error.type == DioErrorType.other){
-          newState = AuthenticationFailed("Please check your internet connection!");
+      } else {
+        if (error.type == DioErrorType.other) {
+          newState =
+              AuthenticationFailed("Please check your internet connection!");
           emit(newState);
-        }else{
+        } else {
           newState = AuthenticationFailed(error.message);
           emit(newState);
         }
@@ -61,19 +60,76 @@ class AuthCubit extends Cubit<AuthState>{
     return newState;
   }
 
-  void loggedIn(String tokenValue){
+  Future<String> updateWishlist(String id, String action) async {
+    String result = SUCCESS;
+    await authRepository.updateWishlist(id: id, action: action).then((response) {
+      if(action == ADD){
+      (state as Authenticated).userdata.wishlist!.add(id);
+      } else if(action == REMOVE){
+        (state as Authenticated).userdata.wishlist!.remove(id);
+      }
+    }).catchError((value) async {
+      DioError error = value;
+      if (error.response != null) {
+        try {
+          if (error.response!.data['detail'] == UNAUTHENTICATED_USER) {
+            await removeToken();
+            emit(LoggedOut());
+            result = FAILED;
+          }
+        } catch (e) {
+          if (error.response!.data == UNAUTHENTICATED_USER) {
+            await removeToken();
+            emit(LoggedOut());
+            result = FAILED;
+          }
+        }
+      }
+    });
+    return result;
+  }
+
+  Future<String> updateCart(String id, String action) async {
+    String result = SUCCESS;
+    await authRepository.updateCart(id: id, action: action).then((response) {
+      if(action == ADD){
+        (state as Authenticated).userdata.cart!.add(id);
+      } else if(action == REMOVE){
+        (state as Authenticated).userdata.cart!.remove(id);
+      }
+    }).catchError((value) async {
+      DioError error = value;
+      if (error.response != null) {
+        try {
+          if (error.response!.data['detail'] == UNAUTHENTICATED_USER) {
+            await removeToken();
+            emit(LoggedOut());
+            result = FAILED;
+          }
+        } catch (e) {
+          if (error.response!.data == UNAUTHENTICATED_USER) {
+            await removeToken();
+            emit(LoggedOut());
+            result = FAILED;
+          }
+        }
+      }
+    });
+    return result;
+  }
+
+  void loggedIn(String tokenValue) {
     emit(Authenticating());
     token = tokenValue;
-    _setToken(token)
-    .then((value) => _fetchUserData());
+    _setToken(token).then((value) => _fetchUserData());
   }
 
   Future<AuthState> removeToken() async {
     AuthState newState;
     token = '';
-    try{
+    try {
       await _deleteToken();
-    }catch(e) {
+    } catch (e) {
       // nothing
     }
 

@@ -8,6 +8,11 @@ const HOST_URL = "http://192.168.29.121:8000";
 const BASE_URL = "$HOST_URL/api";
 const UNAUTHENTICATED_USER = 'unauthenticated_user';
 
+const ADD ='ADD';
+const REMOVE = 'REMOVE';
+const SUCCESS = 'SUCCESS';
+const FAILED = 'FAILED';
+
 const PAGE_LIMIT = 1;
 
 const EMAIL_REGEX = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
