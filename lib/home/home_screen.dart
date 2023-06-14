@@ -1,4 +1,6 @@
 import 'package:application/home/fragments/home_fragment/home_fragment.dart';
+import 'package:application/home/fragments/wishlist_fragment/wishlist_fragment.dart';
+import 'package:application/home/fragments/wishlist_fragment/wishlist_fragment_cubit.dart';
 import 'package:application/registration/authentication/auth_cubit.dart';
 import 'package:application/registration/authentication/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 
   //declare fragments here
   final HomeFragment _homeFragment = HomeFragment();
+  final WishlistFragment _wishlistFragment = WishlistFragment();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -96,6 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
     switch(selectedDrawerIndex){
       case 0:
         return widget._homeFragment;
+      case 3:
+        return BlocProvider(create: (_)=> WishlistFragmentCubit(), child: widget._wishlistFragment);
       default:
         return Text('Error');
     }

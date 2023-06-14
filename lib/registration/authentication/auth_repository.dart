@@ -13,19 +13,23 @@ class AuthRepository {
     return response;
   }
 
-  Future<Response> updateWishlist({required String id, required String action}) async {
-    final response = await dio.get(BASE_URL + "/updatewishlist/",
-        queryParameters: {"id": id, "action": action},
-        options: Options(
-            headers: {HttpHeaders.authorizationHeader: AuthCubit.token}));
+  Future<Response> updateWishlist({required String id,required String action}) async {
+    final response = await dio.get(BASE_URL+"/updatewishlist/",
+        queryParameters: {
+          "id":id,
+          "action":action,
+        },
+        options: Options(headers: {HttpHeaders.authorizationHeader:AuthCubit.token}));
     return response;
   }
 
-  Future<Response> updateCart({required String id, required String action}) async {
-    final response = await dio.get(BASE_URL + "/updatecart/",
-        queryParameters: {"id": id, "action": action},
-        options: Options(
-            headers: {HttpHeaders.authorizationHeader: AuthCubit.token}));
+  Future<Response> updateCart({required String id,required String action}) async {
+    final response = await dio.get(BASE_URL+"/updatecart/",
+        queryParameters: {
+          "id":id,
+          "action":action,
+        },
+        options: Options(headers: {HttpHeaders.authorizationHeader:AuthCubit.token}));
     return response;
   }
 }

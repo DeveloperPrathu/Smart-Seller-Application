@@ -1,7 +1,7 @@
 import 'package:application/constants.dart';
 import 'package:application/models/page_item_model.dart';
 import 'package:application/product_details/product_details_cubit.dart';
-import 'package:application/product_details/product_details_sreen.dart';
+import 'package:application/product_details/product_details_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

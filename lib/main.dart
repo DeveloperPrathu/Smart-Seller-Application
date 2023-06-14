@@ -1,5 +1,6 @@
 import 'package:application/constants.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment_cubit.dart';
+import 'package:application/home/fragments/wishlist_fragment/wishlist_fragment_cubit.dart';
 import 'package:application/home/home_screen.dart';
 import 'package:application/page_items/page_items_cubit.dart';
 import 'package:application/registration/authentication/auth_cubit.dart';

@@ -60,25 +60,26 @@ class AuthCubit extends Cubit<AuthState> {
     return newState;
   }
 
-  Future<String> updateWishlist(String id, String action) async {
+  Future<String> updateWishlist(String id,String action) async {
     String result = SUCCESS;
-    await authRepository.updateWishlist(id: id, action: action).then((response) {
-      if(action == ADD){
-      (state as Authenticated).userdata.wishlist!.add(id);
-      } else if(action == REMOVE){
+    await authRepository.updateWishlist(id: id,action: action).then((response){
+      if(action==ADD) {
+        (state as Authenticated).userdata.wishlist!.add(id);
+      }else if(action == REMOVE){
         (state as Authenticated).userdata.wishlist!.remove(id);
       }
     }).catchError((value) async {
       DioError error = value;
       if (error.response != null) {
         try {
-          if (error.response!.data['detail'] == UNAUTHENTICATED_USER) {
+
+          if(error.response!.data['detail'] == UNAUTHENTICATED_USER){
             await removeToken();
             emit(LoggedOut());
             result = FAILED;
           }
         } catch (e) {
-          if (error.response!.data == UNAUTHENTICATED_USER) {
+          if(error.response!.data == UNAUTHENTICATED_USER){
             await removeToken();
             emit(LoggedOut());
             result = FAILED;
@@ -89,28 +90,29 @@ class AuthCubit extends Cubit<AuthState> {
     return result;
   }
 
-  Future<String> updateCart(String id, String action) async {
+  Future<String> updateCart(String id,String action) async {
     String result = SUCCESS;
-    await authRepository.updateCart(id: id, action: action).then((response) {
-      if(action == ADD){
+    await authRepository.updateCart(id: id,action: action).then((response){
+      if(action==ADD) {
         (state as Authenticated).userdata.cart!.add(id);
-      } else if(action == REMOVE){
+      }else if(action == REMOVE){
         (state as Authenticated).userdata.cart!.remove(id);
       }
     }).catchError((value) async {
       DioError error = value;
       if (error.response != null) {
         try {
-          if (error.response!.data['detail'] == UNAUTHENTICATED_USER) {
+          if(error.response!.data['detail'] == UNAUTHENTICATED_USER){
             await removeToken();
             emit(LoggedOut());
             result = FAILED;
           }
         } catch (e) {
-          if (error.response!.data == UNAUTHENTICATED_USER) {
+          if(error.response!.data == UNAUTHENTICATED_USER){
             await removeToken();
             emit(LoggedOut());
             result = FAILED;
+
           }
         }
       }
