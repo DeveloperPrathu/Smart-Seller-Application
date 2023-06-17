@@ -9,6 +9,9 @@ import 'package:application/registration/authentication/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../home/fragments/cart_fragment/cart_fragment.dart';
+import '../home/fragments/cart_fragment/cart_fragment_cubit.dart';
+
 class ProductDetailsScreen extends StatefulWidget {
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -218,7 +221,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => BlocProvider(
+                                              create: (_) =>
+                                                  CartFragmentCubit(),
+                                              child: CartFragment(
+                                                  selectedOption!.id))));
+                                },
                               ),
                             )),
                           ]

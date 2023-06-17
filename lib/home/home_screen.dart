@@ -1,3 +1,4 @@
+import 'package:application/home/fragments/cart_fragment/cart_fragment_cubit.dart';
 import 'package:application/home/fragments/home_fragment/home_fragment.dart';
 import 'package:application/home/fragments/wishlist_fragment/wishlist_fragment.dart';
 import 'package:application/home/fragments/wishlist_fragment/wishlist_fragment_cubit.dart';
@@ -5,6 +6,8 @@ import 'package:application/registration/authentication/auth_cubit.dart';
 import 'package:application/registration/authentication/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'fragments/cart_fragment/cart_fragment.dart';
 
 class DrawerItem{
 
@@ -27,6 +30,7 @@ class HomeScreen extends StatefulWidget {
   //declare fragments here
   final HomeFragment _homeFragment = HomeFragment();
   final WishlistFragment _wishlistFragment = WishlistFragment();
+  final CartFragment _cartFragment = CartFragment(null);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -99,6 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
     switch(selectedDrawerIndex){
       case 0:
         return widget._homeFragment;
+      case 2:
+        return BlocProvider(create: (_)=> CartFragmentCubit(), child: widget._cartFragment);
       case 3:
         return BlocProvider(create: (_)=> WishlistFragmentCubit(), child: widget._wishlistFragment);
       default:
